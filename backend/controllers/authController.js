@@ -10,13 +10,15 @@ module.exports = {
     // Check if all input fields are filled
     if (!fullname || !email || !username || !password || !repeat_password) {
       return res
-        .status(400)
-        .send({ message: "Please fill all required fields" });
+        .status(200)
+        .send({ code: 400, message: "Please fill all required fields" });
     }
 
     // check if passwords match
     if (password !== repeat_password) {
-      return res.status(400).send({ message: "Passwords do not match" });
+      return res
+        .status(200)
+        .send({ code: 400, message: "Passwords do not match" });
     }
 
     // check if password meets the requirements
@@ -25,10 +27,13 @@ module.exports = {
         /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+=[\]{}|\\,./?'":;<>~`])(?!.*\s).{8,}$/
       )
     ) {
-      return res.status(400).send({
-        message:
-          "Password must contain at least 8 characters including an uppercase letter, a symbol, and a number",
-      });
+      return res
+        .status(200)
+        .send({
+          code: 400,
+          message:
+            "Password must contain at least 8 characters including an uppercase letter, a symbol, and a number",
+        });
     }
 
     // Check if email already exists in the database
@@ -38,7 +43,9 @@ module.exports = {
       ]);
 
       if (emailExist.length > 0) {
-        return res.status(400).send({ message: "Email already exists" });
+        return res
+          .status(200)
+          .send({ code: 400, message: "Email already exists" });
       }
 
       // Check if username already exists in the database
@@ -48,7 +55,9 @@ module.exports = {
       );
 
       if (usernameExist.length > 0) {
-        return res.status(400).send({ message: "Username already exists" });
+        return res
+          .status(200)
+          .send({ code: 400, message: "Username already exists" });
       }
 
       // Hash password before storing it in the database
@@ -64,7 +73,7 @@ module.exports = {
       const token = jwt.sign({ id_user: result.id_user }, "secretkey");
 
       // Send success response with JWT token
-      res.status(200).send({ token, message: "Register success" });
+      res.status(200).send({ token, message: "Register success", code: 200 });
 
       // // create email transporter
       // const transporter = nodemailer.createTransport({

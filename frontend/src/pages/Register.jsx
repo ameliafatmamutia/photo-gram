@@ -69,15 +69,24 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await axios.post("http://localhost:8000/auth/register", {
-      fullname: fullname,
-      email: email,
-      username: username,
-      password: password,
-      repeat_password: passwordConfirm,
-    });
-    console.log(response.data);
-    alert("register success");
+    try {
+      const response = await axios.post("http://localhost:8000/auth/register", {
+        fullname: fullname,
+        email: email,
+        username: username,
+        password: password,
+        repeat_password: passwordConfirm,
+      });
+      if (response.data.code === 200) {
+        console.log(response.data);
+        alert("Register success");
+      } else {
+        alert(`Error: ${response.data.message}`);
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Internal server error");
+    }
   };
 
   return (
