@@ -1,13 +1,15 @@
 import "./App.css";
 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Register from "./pages/Register";
+
 function App() {
   return (
-    <div>
-      <header>
-        <a href="/">photogram</a>
-      </header>
-      <main>main page</main>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route Component={Register} path="/register" />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
