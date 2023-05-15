@@ -27,6 +27,8 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState("");
   const [passwordConfirmError, setPasswordConfirmError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleChangeEmail = () => {
@@ -69,6 +71,9 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    // Disable button
+    setIsLoading(true);
+
     try {
       const response = await axios.post("http://localhost:8000/auth/register", {
         fullname: fullname,
@@ -79,7 +84,7 @@ const Register = () => {
       });
       if (response.data.code === 200) {
         console.log(response.data);
-        alert("Register success");
+        alert(response.data.message);
       } else {
         alert(`Error: ${response.data.message}`);
       }
@@ -87,6 +92,9 @@ const Register = () => {
       console.log(error);
       alert("Internal server error");
     }
+
+    // Enable button
+    setIsLoading(false);
   };
 
   return (
@@ -206,9 +214,13 @@ const Register = () => {
               </FormControl>
             </Grid>
             <Grid item xs={12}>
-              <Button fullWidth variant="contained" onClick={handleSubmit}>
-                {" "}
-                Register{" "}
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={handleSubmit}
+                disabled={isLoading}
+              >
+                {isLoading ? "Loading..." : "Register"}
               </Button>
             </Grid>
             <Grid item xs={12}>
