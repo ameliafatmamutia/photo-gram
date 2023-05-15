@@ -44,9 +44,11 @@ const Login = () => {
         console.log(response.data);
         alert(response.data.message);
         const username = response.data.data.username;
-        const id_user = response.data.data.id;
+        const id_user = response.data.data.id_user;
+        const is_verified = response.data.data.is_verified;
         localStorage.setItem("username", username);
         localStorage.setItem("id_user", id_user);
+        localStorage.setItem("is_verified", is_verified);
         navigate("/");
       } else {
         alert(`Error: ${response.data.message}`);

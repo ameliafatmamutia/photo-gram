@@ -5,6 +5,13 @@ import { Box, Grid, Typography } from "@mui/material";
 const HomeFront = () => {
   const idUser = localStorage.getItem("id_user");
   const username = localStorage.getItem("username");
+  const is_verified = localStorage.getItem("is_verified");
+
+  if (idUser && username && is_verified === "1") {
+    window.location.href = "http://localhost:3000/home";
+  } else {
+    window.location.href = "http://localhost:3000/resend-email";
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }}>

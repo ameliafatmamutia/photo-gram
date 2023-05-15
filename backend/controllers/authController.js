@@ -170,9 +170,10 @@ module.exports = {
         code: 200,
         message: "Login successful",
         data: {
-          id: user[0].id_user,
+          id_user: user[0].id_user,
           username: user[0].username,
           email: user[0].email,
+          is_verified: user[0].is_verified,
         },
       });
     } catch (error) {
