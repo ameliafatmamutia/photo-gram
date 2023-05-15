@@ -1,7 +1,10 @@
 import React from "react";
 import { Box, Button, Grid, Link, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const SuccessVerification = () => {
+  const navigate = useNavigate();
+
   return (
     <Grid component={"main"}>
       <Box
@@ -20,7 +23,9 @@ const SuccessVerification = () => {
         <br />
         <Grid>
           {" "}
-          <Button variant="contained">Login</Button>
+          <Button variant="contained" onClick={() => navigate("/login")}>
+            Login
+          </Button>
         </Grid>
       </Box>
     </Grid>

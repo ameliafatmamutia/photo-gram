@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import { MailLock, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [fullname, setFullname] = useState("");
@@ -28,6 +29,8 @@ const Register = () => {
   const [passwordConfirmError, setPasswordConfirmError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -95,6 +98,8 @@ const Register = () => {
 
     // Enable button
     setIsLoading(false);
+
+    navigate("/resend-email");
   };
 
   return (
@@ -224,7 +229,7 @@ const Register = () => {
               </Button>
             </Grid>
             <Grid item xs={12}>
-              <Link href="" variant="body2">
+              <Link href="/login" variant="body2">
                 Already have an account? Login here
               </Link>
             </Grid>

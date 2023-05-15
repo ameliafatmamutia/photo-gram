@@ -16,12 +16,15 @@ import {
 } from "@mui/material";
 import { Person, Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -44,6 +47,7 @@ const Login = () => {
         const id_user = response.data.data.id;
         localStorage.setItem("username", username);
         localStorage.setItem("id_user", id_user);
+        navigate("/");
       } else {
         alert(`Error: ${response.data.message}`);
       }

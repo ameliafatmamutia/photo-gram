@@ -180,4 +180,46 @@ module.exports = {
       res.status(500).send({ message: "Internal server error" });
     }
   },
+
+  // To resend email verification
+  resend_email: async (req, res) => {
+    try {
+      const { email } = req.body;
+
+      // Check if email exists in users table
+      let emailQuery = `SELECT * FROM users WHERE email = ${db.escape(email)}`;
+      const rows = await query(emailQuery);
+
+      if (!rows.length === 0) {
+        return res
+          .status(200)
+          .send({ code: 400, message: "Email is not registered" });
+      }
+
+      const user = rows[0];
+
+      // Generate new verification token
+      const newToken = jwt.sign({ id_user: user.id_user }, "secretkey");
+
+      // Update verification token in verification_tokens table
+      let newTokenQuery = `UPDATE verification_tokens SET token = ${db.escape(
+        newToken
+      )} WHERE id_user = ${db.escape(user.id_user)}`;
+      await query(newTokenQuery);
+
+      // Send verification email with new token
+      const verificationLink = `http://localhost:8000/auth/${user.id_user}/verify/${newToken}`;
+
+      await sendEmail(user.email, "Verify Account", verificationLink);
+
+      res.status(200).send({
+        code: 200,
+        message:
+          "A verification email has been sent. Please check your email and verify",
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: "Internal server error" });
+    }
+  },
 };
