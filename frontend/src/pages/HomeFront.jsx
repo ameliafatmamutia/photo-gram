@@ -2,7 +2,7 @@ import React from "react";
 import Login from "./Login";
 import { Box, Grid, Typography } from "@mui/material";
 
-const Home = () => {
+const HomeFront = () => {
   const idUser = localStorage.getItem("id_user");
   const username = localStorage.getItem("username");
 
@@ -36,4 +36,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomeFront;

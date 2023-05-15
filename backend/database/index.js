@@ -57,6 +57,16 @@ db.connect((err) => {
             FOREIGN KEY (id_post) REFERENCES posts (id_post)
           );`,
     },
+    {
+      name: "createTablePasswordResetToken",
+      value: `CREATE TABLE IF NOT EXISTS password_reset_tokens (
+        id INTEGER PRIMARY KEY AUTO_INCREMENT,
+        token VARCHAR(255) UNIQUE,
+        id_user INTEGER,
+        FOREIGN KEY (id_user) REFERENCES users (id_user)
+      );
+      `,
+    },
   ];
 
   // Loop through the queries and execute them

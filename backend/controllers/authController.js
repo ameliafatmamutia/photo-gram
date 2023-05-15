@@ -86,10 +86,10 @@ module.exports = {
       const url = `http://localhost:8000/auth/${newUserData[0].id_user}/verify/${token}`;
 
       // // verification email message
-      // const message = `Clik this link to verify: ${url}`;
+      const message = `<p>Click this link to verify: <a href='${url}'>${url}</a></p>`;
 
       // Send verification email
-      await sendEmail(newUserData[0].email, "Verify Account", url);
+      await sendEmail(newUserData[0].email, "Verify Account", message);
 
       // Send success response with JWT token
       res.status(200).send({
@@ -99,7 +99,7 @@ module.exports = {
         code: 200,
       });
     } catch (err) {
-      console.error(err);
+      console.log(err);
       res.status(500).send({ message: "Internal server error" });
     }
   },
@@ -176,7 +176,7 @@ module.exports = {
         },
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).send({ message: "Internal server error" });
     }
   },
@@ -208,9 +208,11 @@ module.exports = {
       await query(newTokenQuery);
 
       // Send verification email with new token
-      const verificationLink = `http://localhost:8000/auth/${user.id_user}/verify/${newToken}`;
+      const url = `http://localhost:8000/auth/${user.id_user}/verify/${newToken}`;
 
-      await sendEmail(user.email, "Verify Account", verificationLink);
+      const message = `<p>Click this link to verify: <a href='${url}'>${url}</a></p>`;
+
+      await sendEmail(user.email, "Verify Account", message);
 
       res.status(200).send({
         code: 200,
@@ -218,8 +220,105 @@ module.exports = {
           "A verification email has been sent. Please check your email and verify",
       });
     } catch (error) {
-      console.error(error);
+      console.log(error);
       res.status(500).send({ message: "Internal server error" });
+    }
+  },
+  // For forgot password
+  forgotPasswordSendEmail: async (req, res) => {
+    try {
+      const { email } = req.body;
+      const emailExist = await query("SELECT * FROM users WHERE email = ?", [
+        email,
+      ]);
+
+      if (emailExist.length === 0) {
+        return res
+          .status(200)
+          .send({ code: 400, message: "Email is not registered" });
+      }
+
+      const token = jwt.sign(
+        { id_user: emailExist[0].id_user, email: emailExist[0].email },
+        "secretkey"
+      );
+
+      await query(
+        "INSERT INTO password_reset_tokens (id_user, token) VALUES (?, ?)",
+        [emailExist[0].id_user, token]
+      );
+
+      const url = `http://localhost:8000/auth/${emailExist[0].id_user}/verify-forgot-password/${token}`;
+
+      const message = `<p>Click this link to reset password: <a href='${url}'>${url}</a></p>`;
+
+      await sendEmail(emailExist[0].email, "Reset Password", message);
+
+      res.status(200).send({
+        data: {
+          token: token,
+        },
+        message: "Check your email to reset password",
+        code: 200,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  verifyForgotPassword: async (req, res) => {
+    const { id_user, token } = req.params;
+
+    try {
+      // Check token in database
+      let checkTokenQuery = `SELECT * FROM password_reset_tokens WHERE token = ${db.escape(
+        token
+      )};`;
+      const tokenData = await query(checkTokenQuery);
+      if (tokenData.length === 0) {
+        return res
+          .status(200)
+          .send({ code: 400, message: "Invalid or expired token" });
+      }
+
+      res.redirect(`http://localhost:3000/reset-password?token=${token}`);
+    } catch (err) {
+      console.log(err);
+      return res
+        .status(500)
+        .send({ code: 500, message: "Internal server error" });
+    }
+  },
+  resetPassword: async (req, res) => {
+    const { token, password } = req.body;
+
+    try {
+      // Decrypt the token using the secret or public key
+      const payload = jwt.verify(token, "secretkey");
+
+      const hashedPassword = bcrypt.hashSync(password, 10);
+
+      const queryUpdatePassword = `UPDATE users SET password = ? WHERE email = ?`;
+      const result = await query(queryUpdatePassword, [
+        hashedPassword,
+        payload.email,
+      ]);
+
+      if (result.affectedRows > 0) {
+        // Password updated successfully
+        res.status(200).send({
+          code: 200,
+          message: "Success updating user password, please login",
+        });
+      } else {
+        // User with the specified email does not exist
+        res.status(200).send({
+          code: 400,
+          message: "User not found, please use a valid URL",
+        });
+      }
+    } catch (error) {
+      // Token verification failed
+      res.status(400).send({ error: "Invalid token" });
     }
   },
 };

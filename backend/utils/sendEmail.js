@@ -1,9 +1,7 @@
 const nodemailer = require("nodemailer");
 
-module.exports = async (email, subject, url) => {
+module.exports = async (email, subject, message) => {
   try {
-    const message = `<p>Click this link to verify: <a href='${url}'>${url}</a></p>`;
-
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       service: "gmail",
