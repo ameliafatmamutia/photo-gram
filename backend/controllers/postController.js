@@ -62,6 +62,7 @@ module.exports = {
         users.profile_picture_url,
         posts.image_url,
         posts.caption,
+        posts.createdAt,
         COUNT(DISTINCT likes.id) AS numberOfLikes,
         GROUP_CONCAT(DISTINCT likes.id_user) AS likedBy,
         COUNT(DISTINCT comments.id) AS numberOfComments
@@ -119,7 +120,8 @@ module.exports = {
           users.fullName,
           users.profile_picture_url,
           posts.image_url,
-          posts.caption
+          posts.caption,
+          posts.createdAt
         FROM posts
         INNER JOIN users ON posts.id_user = users.id_user
         LEFT JOIN likes ON posts.id_post = likes.id_post
@@ -139,6 +141,7 @@ module.exports = {
         users.profile_picture_url,
         posts.image_url,
         posts.caption,
+        posts.createdAt,
         COUNT(DISTINCT likes.id) AS numberOfLikes,
         GROUP_CONCAT(DISTINCT likes.id_user) AS likedBy,
         COUNT(DISTINCT comments.id) AS numberOfComments

@@ -7,7 +7,7 @@ module.exports = {
     try {
       const id = req.params.id;
       const fetchCommentQuery = `
-        SELECT comments.id, comments.comment, users.profile_picture_url, users.id_user, users.fullname, users.username
+        SELECT comments.id, comments.comment, users.profile_picture_url, users.id_user, users.fullname, users.username, comments.createdAt
         FROM comments
         INNER JOIN users ON comments.id_user = users.id_user
         WHERE comments.id_post = ?
@@ -15,13 +15,11 @@ module.exports = {
       `;
 
       const response = await query(fetchCommentQuery, [id]);
-      res
-        .status(200)
-        .send({
-          code: 200,
-          message: `get all cooment post for id = ${id}`,
-          data: response,
-        });
+      res.status(200).send({
+        code: 200,
+        message: `get all comment post for id = ${id}`,
+        data: response,
+      });
     } catch (error) {
       console.log(error);
       res.status(400).send({ code: 400, message: `failed to get comments` });
@@ -29,7 +27,6 @@ module.exports = {
   },
   createComment: async (req, res) => {
     const { id_user, comment, id_post } = req.body;
-    console.log(req.body);
     let createComment = `INSERT INTO comments (id_user, id_post, comment) 
     VALUES (${db.escape(id_user)}, ${db.escape(id_post)}, ${db.escape(
       comment

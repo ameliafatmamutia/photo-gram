@@ -28,6 +28,8 @@ const Home = () => {
   const [dataPosts, setDataPosts] = useState([]);
   const [totalPosts, setTotalPosts] = useState(0);
 
+  console.log(dataPosts);
+
   const handleScroll = () => {
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
     if (scrollTop + clientHeight >= scrollHeight) {

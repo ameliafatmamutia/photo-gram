@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const id_user = localStorage.getItem("id_user");
 
@@ -53,6 +54,11 @@ const PostDetailed = ({
       />
       <CardContent>
         <Typography>{data.caption}</Typography>
+      </CardContent>
+      <CardContent>
+        <Typography>
+          {dayjs(data.createdAt).format("MMMM D, YYYY h:mm A")}
+        </Typography>
       </CardContent>
       <CardActions disableSpacing>
         {likedBy.includes(parseInt(id_user)) ? (

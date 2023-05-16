@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { FavoriteOutlined, ChatBubble } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
 
 const PostIndividual = ({ data, isLiked, handleLike, handleDislike }) => {
   const navigate = useNavigate();
@@ -36,6 +37,11 @@ const PostIndividual = ({ data, isLiked, handleLike, handleDislike }) => {
       />
       <CardContent>
         <Typography>{data.caption}</Typography>
+      </CardContent>
+      <CardContent>
+        <Typography>
+          {dayjs(data.createdAt).format("MMMM D, YYYY h:mm A")}
+        </Typography>
       </CardContent>
       <CardActions disableSpacing>
         {isLiked ? (
