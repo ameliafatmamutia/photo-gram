@@ -9,7 +9,7 @@ module.exports = async (email, subject, message) => {
       secure: false,
       auth: {
         user: "noreply.photogram@gmail.com",
-        pass: "",
+        pass: "parbcrbogakkayuo",
       },
     });
 

@@ -4,7 +4,7 @@ const util = require("util");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "Ameliaf$363",
   database: "db_photogram",
   port: 3306,
 });
@@ -68,6 +68,15 @@ db.connect((err) => {
         FOREIGN KEY (id_user) REFERENCES users (id_user)
       );
       `,
+    },
+    {
+      name: "createTableVerificationToken",
+      value: `CREATE TABLE IF NOT EXISTS verification_tokens (
+        id INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT,
+        token VARCHAR(255) NOT NULL,
+        id_user INTEGER NOT NULL,
+        FOREIGN KEY (id_user) REFERENCES users (id_user)
+      );`,
     },
   ];
 
