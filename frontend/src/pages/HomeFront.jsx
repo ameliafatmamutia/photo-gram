@@ -7,9 +7,13 @@ const HomeFront = () => {
   const username = localStorage.getItem("username");
   const is_verified = localStorage.getItem("is_verified");
 
+  
+
   if (idUser && username && is_verified === "1") {
     window.location.href = "http://localhost:3000/home";
-  } else {
+  }
+
+  if (idUser && username && is_verified === "0") {
     window.location.href = "http://localhost:3000/resend-email";
   }
 
@@ -25,17 +29,13 @@ const HomeFront = () => {
               mt: 8,
             }}
           >
-            {idUser && username ? (
-              <Typography variant="h6">Welcome, {username}!</Typography>
-            ) : (
-              <>
-                <Typography variant="h4">Photogram</Typography>
-                <br />
-                <br />
-                <Typography variant="h6">Login to see what's inside</Typography>
-                <Login />
-              </>
-            )}
+            <>
+              <Typography variant="h4">Photogram</Typography>
+              <br />
+              <br />
+              <Typography variant="h6">Login to see what's inside</Typography>
+              <Login />
+            </>
           </Box>
         </Grid>
       </Grid>
