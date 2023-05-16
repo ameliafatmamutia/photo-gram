@@ -39,7 +39,6 @@ const ResponsiveAppBar = () => {
       value: "Log out",
       onClick: () => {
         handleLogout();
-        // handleCloseUserMenu();
       },
     },
   ];
@@ -80,6 +79,12 @@ const ResponsiveAppBar = () => {
               ))}
             </Menu>
           </Box>
+          <Box sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" textAlign="center">
+              Photogram
+            </Typography>
+          </Box>
+          <Box sx={{ flexGrow: 0 }}></Box>
         </Toolbar>
       </Container>
     </AppBar>

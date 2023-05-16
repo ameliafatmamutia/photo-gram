@@ -68,6 +68,7 @@ const Post = () => {
       };
       await axios.post("http://localhost:8000/api/comment", reqBody);
       getCommentListById();
+      getPostById();
     } catch (error) {
       console.error("Error creating post:", error);
       setIsLoading(false);
@@ -78,6 +79,7 @@ const Post = () => {
     try {
       await axios.delete(`http://localhost:8000/api/comment/${id_comment}`);
       getCommentListById();
+      getPostById();
     } catch (error) {
       console.error("Error creating post:", error);
       setIsLoading(false);
