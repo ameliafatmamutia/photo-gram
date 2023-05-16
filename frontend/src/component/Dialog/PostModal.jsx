@@ -15,7 +15,7 @@ const steps = ["Choose photo to upload", "Create caption for photo"];
 
 const id_user = localStorage.getItem("id_user");
 
-export default function PostModal({ openModal, setOpenModal }) {
+export default function PostModal({ openModal, setOpenModal, getAllPost }) {
   const [activeStep, setActiveStep] = useState(0);
   const [caption, setCaption] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -51,7 +51,8 @@ export default function PostModal({ openModal, setOpenModal }) {
           },
         }
       );
-
+      handleClose();
+      getAllPost();
       return response.data;
     } catch (error) {
       console.error("Error creating post:", error);

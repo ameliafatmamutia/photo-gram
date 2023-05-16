@@ -18,6 +18,12 @@ const pageLimit = 100;
 const id_user = localStorage.getItem("id_user");
 
 const UserPost = () => {
+  const idUser = localStorage.getItem("id_user");
+  const username = localStorage.getItem("username");
+  if (!idUser && !username) {
+    window.location.href = "http://localhost:3000/login";
+  }
+
   const { id } = useParams();
   const [dataHeader, setDataHeader] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +46,7 @@ const UserPost = () => {
         id_user: id_user, // REPLACE WITH USER_ID from storage
       };
       await axios.post(`http://localhost:8000/api/likes/${id_post}`, reqBody);
-      setDataPosts((data) => addLikedBy(id_user, id_post, data));
+      setDataPosts((data) => addLikedBy(parseInt(id_user), id_post, data));
     } catch (error) {
       console.log(error);
     }
@@ -59,7 +65,7 @@ const UserPost = () => {
       await axios.delete(`http://localhost:8000/api/likes/${id_post}`, {
         data: reqBody,
       });
-      setDataPosts((data) => reduceLikedBy(id_user, id_post, data));
+      setDataPosts((data) => reduceLikedBy(parseInt(id_user), id_post, data));
     } catch (error) {
       console.log(error);
     }
@@ -119,7 +125,7 @@ const UserPost = () => {
           rowSpacing={4}
         >
           <Grid item xs={12}>
-            <IconButton onClick={() => navigate("/")}>
+            <IconButton onClick={() => navigate("/home")}>
               <ArrowBack />
               <Typography> Back </Typography>
             </IconButton>
@@ -138,7 +144,7 @@ const UserPost = () => {
               dataPosts.map((post) => (
                 <PostIndividual
                   data={post}
-                  isLiked={post.likedBy.includes(id_user)}
+                  isLiked={post.likedBy.includes(parseInt(id_user))}
                   handleLike={handleLike}
                   handleDislike={handleDislike}
                 />

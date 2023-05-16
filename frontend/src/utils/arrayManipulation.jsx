@@ -28,7 +28,7 @@ export function addLikedBy(liker_id_user, liked_id_post, data) {
     // If the post has a matching id_post
     if (post.id_post === liked_id_post) {
       // Check if liker_id_user is already in the likedBy array
-      const alreadyLiked = post.likedBy.includes(liker_id_user);
+      const alreadyLiked = post.likedBy.includes(parseInt(liker_id_user));
 
       // If liker_id_user is not already in likedBy array, add it
       if (!alreadyLiked) {

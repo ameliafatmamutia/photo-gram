@@ -81,8 +81,6 @@ const ProfileItemList = () => {
               <Typography variant="subtitle1">
                 User Bio: {profileData.bio}
               </Typography>
-              <Divider sx={{ marginBottom: "16px", width: "50%" }} />
-              <Button variant="outlined"> resend verification </Button>
             </>
           )}
         </>

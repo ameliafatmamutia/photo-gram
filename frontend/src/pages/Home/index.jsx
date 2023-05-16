@@ -14,6 +14,12 @@ console.log(id_user);
 console.log(typeof id_user);
 
 const Home = () => {
+  const idUser = localStorage.getItem("id_user");
+  const username = localStorage.getItem("username");
+  if (!idUser && !username) {
+    window.location.href = "http://localhost:3000/login";
+  }
+
   const containerRef = useRef(null);
   const isScrolledToBottom = useRef(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +48,7 @@ const Home = () => {
         id_user: id_user, // REPLACE WITH USER_ID from storage
       };
       await axios.post(`http://localhost:8000/api/likes/${id_post}`, reqBody);
-      setDataPosts((data) => addLikedBy(id_user, id_post, data));
+      setDataPosts((data) => addLikedBy(parseInt(id_user), id_post, data));
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +67,7 @@ const Home = () => {
       await axios.delete(`http://localhost:8000/api/likes/${id_post}`, {
         data: reqBody,
       });
-      setDataPosts((data) => reduceLikedBy(id_user, id_post, data));
+      setDataPosts((data) => reduceLikedBy(parseInt(id_user), id_post, data));
     } catch (error) {
       console.log(error);
     }
@@ -143,7 +149,7 @@ const Home = () => {
                   <Grid item xs={12}>
                     <PostIndividual
                       data={post}
-                      isLiked={post.likedBy.includes(id_user)}
+                      isLiked={post.likedBy.includes(parseInt(id_user))}
                       handleLike={handleLike}
                       handleDislike={handleDislike}
                     />
@@ -168,7 +174,11 @@ const Home = () => {
         <Add />
         Create Post
       </Fab>
-      <PostModal openModal={openModal} setOpenModal={setOpenModal} />
+      <PostModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        getAllPost={getAllPost}
+      />
     </>
   );
 };

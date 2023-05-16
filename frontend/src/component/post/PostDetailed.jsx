@@ -43,6 +43,7 @@ const PostDetailed = ({
         avatar={<Avatar src={`http://${data.profile_picture_url}` || ""} />}
         title={data.username || ""}
         subheader={data.fullname || ""}
+        onClick={() => navigate(`/user/${data.id_user}`)}
       />
       <CardMedia
         component="img"
@@ -54,7 +55,7 @@ const PostDetailed = ({
         <Typography>{data.caption}</Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {likedBy.includes(id_user) ? (
+        {likedBy.includes(parseInt(id_user)) ? (
           <IconButton
             aria-label="liked"
             onClick={() => handleDislike(data.id_post)}

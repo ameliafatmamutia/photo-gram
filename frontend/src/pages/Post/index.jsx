@@ -21,6 +21,12 @@ const Post = () => {
   const [openModal, setOpenModal] = useState(false);
 
   const getPostById = async () => {
+    const idUser = localStorage.getItem("id_user");
+    const username = localStorage.getItem("username");
+    if (!idUser && !username) {
+      window.location.href = "http://localhost:3000/login";
+    }
+
     try {
       const response = await axios.get(
         `http://localhost:8000/api/posts/${Number(id)}`
@@ -84,7 +90,7 @@ const Post = () => {
         id_user: id_user, // REPLACE WITH USER_ID from storage
       };
       await axios.post(`http://localhost:8000/api/likes/${id_post}`, reqBody);
-      const updatedLikedBy = [...data.likedBy, id_user];
+      const updatedLikedBy = [...data.likedBy, parseInt(id_user)];
       setData({
         ...data,
         numberOfLikes: data.numberOfLikes + 1,
@@ -108,7 +114,9 @@ const Post = () => {
       await axios.delete(`http://localhost:8000/api/likes/${id_post}`, {
         data: reqBody,
       });
-      const updatedLikedBy = data.likedBy.filter((id) => id !== id_user);
+      const updatedLikedBy = data.likedBy.filter(
+        (id) => id !== parseInt(id_user)
+      );
       setData({
         ...data,
         numberOfLikes: data.numberOfLikes - 1,
@@ -147,7 +155,7 @@ const Post = () => {
           rowSpacing={4}
         >
           <Grid item xs={12}>
-            <IconButton onClick={() => navigate("/")}>
+            <IconButton onClick={() => navigate("/home")}>
               <ArrowBack />
               <Typography> Back </Typography>
             </IconButton>

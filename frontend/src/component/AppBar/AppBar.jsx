@@ -1,15 +1,15 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import { useNavigate } from 'react-router-dom';
-import { Person } from '@mui/icons-material';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import Container from "@mui/material/Container";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import { useNavigate } from "react-router-dom";
+import { Person } from "@mui/icons-material";
 const ResponsiveAppBar = () => {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
@@ -22,21 +22,30 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
-  const userSettings = [{
-    value: 'Profile',
-    onClick: () => {
-      navigate('/profile')
-      handleCloseUserMenu()
-    }
-  }, {
-    value: 'Log out',
-    onClick: () => {
-      handleCloseUserMenu()
-    }
-  }]
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
+  const userSettings = [
+    {
+      value: "Profile",
+      onClick: () => {
+        navigate("/profile");
+        handleCloseUserMenu();
+      },
+    },
+    {
+      value: "Log out",
+      onClick: () => {
+        handleLogout();
+        // handleCloseUserMenu();
+      },
+    },
+  ];
 
   return (
-    <AppBar position="static" sx={{ height: '64px' }}>
+    <AppBar position="static" sx={{ height: "64px" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ flexGrow: 0 }}>
@@ -46,23 +55,26 @@ const ResponsiveAppBar = () => {
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
               {userSettings.map((setting, key) => (
-                <MenuItem key={`menu-setting-${key}-${setting.value}`} onClick={setting.onClick}>
+                <MenuItem
+                  key={`menu-setting-${key}-${setting.value}`}
+                  onClick={setting.onClick}
+                >
                   <Typography textAlign="center">{setting.value}</Typography>
                 </MenuItem>
               ))}
@@ -72,5 +84,5 @@ const ResponsiveAppBar = () => {
       </Container>
     </AppBar>
   );
-}
+};
 export default ResponsiveAppBar;
