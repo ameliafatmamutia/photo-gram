@@ -33,6 +33,7 @@ db.connect((err) => {
         image_url VARCHAR(255),
         caption VARCHAR(255),
         id_user INT,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (id_user) REFERENCES users (id_user)
       );`,
     },
@@ -43,6 +44,7 @@ db.connect((err) => {
         comment VARCHAR(255),
         id_user INT,
         id_post INT,
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (id_user) REFERENCES users (id_user),
         FOREIGN KEY (id_post) REFERENCES posts (id_post)
       );`,

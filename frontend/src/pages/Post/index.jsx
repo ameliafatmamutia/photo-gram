@@ -19,6 +19,7 @@ const Post = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingComment, setIsLoadingComment] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [showAllComments, setShowAllComments] = useState(false);
 
   const getPostById = async () => {
     const idUser = localStorage.getItem("id_user");
@@ -135,6 +136,10 @@ const Post = () => {
 
   const navigate = useNavigate();
 
+  const toggleShowAllComments = () => {
+    setShowAllComments((prevValue) => !prevValue);
+  };
+
   return (
     <Grid component={"main"}>
       <Box
@@ -182,9 +187,20 @@ const Post = () => {
             {isLoadingComment ? (
               <CircularProgress />
             ) : (
-              commentData.map((data) => (
-                <CommentCard data={data} onDelete={handleCommentDelete} />
-              ))
+              commentData
+                .slice(0, showAllComments ? commentData.length : 5)
+                .map((data) => (
+                  <CommentCard data={data} onDelete={handleCommentDelete} />
+                ))
+            )}
+            {commentData.length > 5 && (
+              <Typography
+                variant="caption"
+                style={{ cursor: "pointer", color: "blue" }}
+                onClick={toggleShowAllComments}
+              >
+                {showAllComments ? "Show Less" : "Show More"}
+              </Typography>
             )}
           </Grid>
         </Grid>

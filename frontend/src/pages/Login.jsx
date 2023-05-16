@@ -49,7 +49,7 @@ const Login = () => {
         localStorage.setItem("username", username);
         localStorage.setItem("id_user", id_user);
         localStorage.setItem("is_verified", is_verified);
-        navigate("/");
+        navigate("/home");
       } else {
         alert(`Error: ${response.data.message}`);
       }

@@ -19,6 +19,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const idUser = localStorage.getItem("id_user");
+  const Username = localStorage.getItem("username");
+
+  if (idUser && Username) {
+    window.location.href = "http://localhost:3000/home";
+  }
+
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
