@@ -95,6 +95,7 @@ const Register = () => {
       if (response.data.code === 200) {
         console.log(response.data);
         alert(response.data.message);
+        navigate('/resend-email')
       } else {
         alert(`Error: ${response.data.message}`);
       }
@@ -105,8 +106,6 @@ const Register = () => {
 
     // Enable button
     setIsLoading(false);
-
-    navigate("/resend-email");
   };
 
   return (

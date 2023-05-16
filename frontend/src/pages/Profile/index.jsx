@@ -27,6 +27,11 @@ export default function ProfilePage() {
     window.location.href = "http://localhost:3000/login";
   }
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/");
+  };
+
   const navigate = useNavigate();
   const [indexSubItem, setIndexSubItem] = useState(0);
   return (
@@ -70,7 +75,7 @@ export default function ProfilePage() {
             </ListItemButton>
           </ListItem>
           <ListItem key={"logout-setting"} disablePadding>
-            <ListItemButton onClick={() => navigate("/login")}>
+            <ListItemButton onClick={() => handleLogout}>
               <ListItemIcon>
                 <Logout />
               </ListItemIcon>
